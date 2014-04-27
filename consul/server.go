@@ -110,6 +110,7 @@ type endpoints struct {
 	Raft    *Raft
 	Status  *Status
 	KVS     *KVS
+	Misc    *Misc
 }
 
 // NewServer is used to construct a new Consul server from the
@@ -301,6 +302,7 @@ func (s *Server) setupRPC(tlsConfig *tls.Config) error {
 	s.endpoints.Catalog = &Catalog{s}
 	s.endpoints.Health = &Health{s}
 	s.endpoints.KVS = &KVS{s}
+	s.endpoints.Misc = &Misc{s}
 
 	// Register the handlers
 	s.rpcServer.Register(s.endpoints.Status)
@@ -308,6 +310,7 @@ func (s *Server) setupRPC(tlsConfig *tls.Config) error {
 	s.rpcServer.Register(s.endpoints.Catalog)
 	s.rpcServer.Register(s.endpoints.Health)
 	s.rpcServer.Register(s.endpoints.KVS)
+	s.rpcServer.Register(s.endpoints.Misc)
 
 	list, err := net.ListenTCP("tcp", s.config.RPCAddr)
 	if err != nil {
